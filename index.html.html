@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mekanisme Alur Keputusan Bupati</title>
+    <meta name="description" content="Flowchart interaktif untuk mekanisme alur keputusan Bupati dengan estimasi waktu 3-7 hari kerja">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            max-width: 900px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 26px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+            font-weight: 500;
+            text-align: center;
+            min-width: 320px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(52, 152, 219, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .step-start {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+        }
+
+        .step-checklist {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3);
+        }
+
+        .step-return {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        .step-important {
+            background: linear-gradient(135deg, #ff9500, #ff6b35);
+            box-shadow: 0 8px 20px rgba(255, 149, 0, 0.3);
+            border: 3px solid #ffd700;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .step-estimation {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .step-clickable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 8px 20px rgba(255, 149, 0, 0.3), 0 0 25px rgba(255, 215, 0, 0.5); }
+            to { box-shadow: 0 15px 30px rgba(255, 149, 0, 0.5), 0 0 35px rgba(255, 215, 0, 0.7); }
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid #34495e;
+            margin: 8px 0;
+            opacity: 0.8;
+        }
+
+        .branch-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 700px;
+            margin: 15px 0;
+        }
+
+        .branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .branch-arrow {
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 18px solid #34495e;
+            opacity: 0.7;
+        }
+
+        .branch-label {
+            background: rgba(52, 73, 94, 0.9);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .return-arrow {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            position: relative;
+            margin: 15px 0;
+            border-radius: 2px;
+        }
+
+        .return-arrow::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: -8px;
+            width: 0;
+            height: 0;
+            border-left: 15px solid #c0392b;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+
+        .step-number {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+            margin-right: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .return-text {
+            font-size: 12px;
+            color: #e74c3c;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 5px;
+            background: rgba(231, 76, 60, 0.1);
+            padding: 5px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .highlight-box {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px dashed #ffc107;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .highlight-text {
+            color: #856404;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* OPD Dropdown Styles */
+        .opd-dropdown {
+            display: none;
+            width: 100%;
+            max-width: 850px;
+            margin: 15px 0;
+        }
+
+        .opd-dropdown.show {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .opd-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .assistant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .assistant-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        .assistant-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .assistant-card.asisten1 { border-left-color: #e74c3c; }
+        .assistant-card.asisten2 { border-left-color: #27ae60; }
+        .assistant-card.asisten3 { border-left-color: #3498db; }
+
+        .assistant-header {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .assistant-card.asisten1 .assistant-header { color: #e74c3c; }
+        .assistant-card.asisten2 .assistant-header { color: #27ae60; }
+        .assistant-card.asisten3 .assistant-header { color: #3498db; }
+
+        .opd-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .opd-item {
+            background: white;
+            padding: 8px 12px;
+            margin: 6px 0;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #2c3e50;
+            border-left: 3px solid;
+            transition: all 0.2s ease;
+        }
+
+        .opd-item:hover {
+            transform: translateX(5px);
+        }
+
+        .assistant-card.asisten1 .opd-item { border-left-color: #e74c3c; }
+        .assistant-card.asisten2 .opd-item { border-left-color: #27ae60; }
+        .assistant-card.asisten3 .opd-item { border-left-color: #3498db; }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .step {
+                min-width: 280px;
+                padding: 15px 25px;
+                font-size: 14px;
+            }
+
+            .title {
+                font-size: 22px;
+            }
+
+            .branch-container {
+                flex-direction: column;
+                gap: 25px;
+            }
+
+            .assistant-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Mekanisme Alur Keputusan Bupati</h1>
+        
+        <div class="flowchart">
+            <!-- Step 1: Pengajuan SKPD -->
+            <div class="step step-start">
+                <span class="step-number">1</span>
+                Pengajuan SKPD
+            </div>
+            <div class="arrow"></div>
+
+            <!-- Step 2: Checklist Kelengkapan Dokumen -->
+            <div class="step step-checklist">
+                <span class="step-number">2</span>
+                Checklist Kelengkapan Dokumen<br>
+                <small style="font-size: 12px; line-height: 1.6; display: block; margin-top: 8px;">
+                    • Surat Pengantar • Draft SK • Pertimbangan Teknis<br>
+                    • Dasar Hukum • Dokumen Pendukung Lainnya Sesuai Kebutuhan
+                </small>
+            </div>
+            <div class="arrow"></div>
+
+            <!-- Step 3: Verifikasi Administratif -->
+            <div class="step step-checklist">
+                <span class="step-number">3</span>
+                Verifikasi Administratif
+            </div>
+
+            <!-- Branching -->
+            <div class="branch-container">
+                <div class="branch">
+                    <div class="branch-label">Tidak Lengkap</div>
+                    <div class="branch-arrow"></div>
+                    <div class="step step-return" style="min-width: 250px;">
+                        <span class="step-number">4a</span>
+                        Dikembalikan untuk dilengkapi
+                    </div>
+                    <div class="return-arrow"></div>
+                    <div class="return-text">Kembali ke Pengajuan SKPD</div>
+                </div>
+
+                <div class="branch">
+                    <div class="branch-label">Lengkap</div>
+                    <div class="branch-arrow"></div>
+                    <div class="step step-important" style="min-width: 250px;">
+                        <span class="step-number">4b</span>
+                        Review Substantif<br><small>(Hari Kerja Mulai Dihitung)</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-text">TITIK MULAI PERHITUNGAN HARI KERJA</div>
+            </div>
+
+            <div class="arrow"></div>
+
+            <!-- Step 5: Konsultasi & Perbaikan -->
+            <div class="step">
+                <span class="step-number">5</span>
+                Konsultasi & Perbaikan
+            </div>
+            <div class="arrow"></div>
+
+            <!-- Step 6: Finalisasi Naskah -->
+            <div class="step">
+                <span class="step-number">6</span>
+                Finalisasi Naskah
+            </div>
+            <div class="arrow"></div>
+
+            <!-- Step 7: Paraf Koordinasi Bagian Hukum -->
+            <div class="step">
+                <span class="step-number">7</span>
+                Paraf Koordinasi Bagian Hukum
+            </div>
+            <div class="arrow"></div>
+
+            <!-- Step 8: Paraf Pemrakarsa -->
+            <div class="step">
+                <span class="step-number">8</span>
+                Paraf Pemrakarsa
+            </div>
+            <div class="arrow"></div>
+
+            <!-- Step 9: Paraf Asisten - CLICKABLE -->
+            <div class="step step-clickable" onclick="toggleOPD()">
+                <span class="step-number">9</span>
+                Paraf Asisten Sesuai Bidang<br>
+                <small style="font-size: 11px; opacity: 0.9; margin-top: 5px; display: block;">
+                    (Klik untuk lihat pembagian OPD)
+                </small>
+            </div>
+
+            <!-- OPD Dropdown -->
+            <div class="opd-dropdown" id="opdDropdown">
+                <div class="opd-container">
+                    <div class="assistant-grid">
+                        <!-- Asisten I -->
+                        <div class="assistant-card asisten1">
+                            <div class="assistant-header">
+                                Asisten I<br>
+                                <small style="font-size: 12px; font-weight: 400; opacity: 0.8;">Pemerintahan & Kesramas</small>
+                            </div>
+                            <ul class="opd-list">
+                                <li class="opd-item">Bagian Pemerintahan Umum Setda</li>
+                                <li class="opd-item">Bagian Kesramas Setda</li>
+                                <li class="opd-item">Bagian Kumdang Setda</li>
+                                <li class="opd-item">Dinas Pendidikan dan Kebudayaan</li>
+                                <li class="opd-item">Dinas Kesehatan</li>
+                                <li class="opd-item">Dinas Pemuda Olahraga Parawisata</li>
+                                <li class="opd-item">Dinas Kependudukan dan Catatan Sipil</li>
+                                <li class="opd-item">Dinas Sosial</li>
+				<li class="opd-item">Dinas Pemberdayaan Masyarakat dan Desa</li>
+				<li class="opd-item">Badan Kesbang dan Politik</li>
+				<li class="opd-item">Badan Penanggulangan Bencana Daerah</li>
+				<li class="opd-item">Dinas Pemberdayaan Perempuan,Perlindungan Anak,Pengendalian Penduduk,dan KB</li>
+				<li class="opd-item">Dinas Sat Polisi-PP dan Damkar</li>
+				<li class="opd-item">Kantor Kecamatan/Kelurahan</li>
+                            </ul>
+                        </div>
+
+                        <!-- Asisten II -->
+                        <div class="assistant-card asisten2">
+                            <div class="assistant-header">
+                                Asisten II<br>
+                                <small style="font-size: 12px; font-weight: 400; opacity: 0.8;">Perekonomian & Pembangunan</small>
+                            </div>
+                            <ul class="opd-list">
+                                <li class="opd-item">Bagian Adm.Pembangunan dan SDA Setda</li>
+                                <li class="opd-item">Bagian Perekonomian Setda</li>
+                                <li class="opd-item">Bagian Layanan Pengadaan Setda</li>
+                                <li class="opd-item">Dinas Peternakan dan Kesehatan Hewan</li>
+                                <li class="opd-item">Dinas Perikanan</li>
+                                <li class="opd-item">Dinas Perdagangan dan Perindustrian</li>
+                                <li class="opd-item">Dinas Koperasi,dan UKM</li>
+                                <li class="opd-item">Dinas Tanaman Pangan Holtikultura dan Perkebunan</li>
+                                <li class="opd-item">Dinas Perhubungan</li>
+				<li class="opd-item">Dinas Ketahanan Pangan</li>
+				<li class="opd-item">Dinas PU,Penataan Ruang,dan Pertanahan</li>
+				<li class="opd-item">Dinas Lingkungan Hidup</li>
+				<li class="opd-item">Dinas Tenaga Kerja dan Transmigrasi</li>
+				<li class="opd-item">Dinas Perumahan dan Kawasan Permukiman</li>
+				<li class="opd-item">Bappelitbangda</li>
+                            </ul>
+                        </div>
+
+                        <!-- Asisten III -->
+                        <div class="assistant-card asisten3">
+                            <div class="assistant-header">
+                                Asisten III<br>
+                                <small style="font-size: 12px; font-weight: 400; opacity: 0.8;">Administrasi Umum</small>
+                            </div>
+                            <ul class="opd-list">
+                                <li class="opd-item">Bagian Umum</li>
+                                <li class="opd-item">Bagian Humas Setda</li>
+                                <li class="opd-item">Bagian Organisasi Setda</li>
+                                <li class="opd-item">Inspektorat Daerah</li>
+                                <li class="opd-item">Badan Pendapatan Daerah</li>
+                                <li class="opd-item">Badan Pengelolah Keuangan dan Aset Daerah</li>
+                                <li class="opd-item">Badan Kepegawaian dan Pemberdayaan Sumber Daya Manusia</li>
+                                <li class="opd-item">Dinas Perpustakaan dan Kearsipan</li>
+                                <li class="opd-item">Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu</li>
+                                <li class="opd-item">Dinas Komunikasi dan Informtika</li>
+				<li class="opd-item">Sekretariat DPRD</li>
+				<li class="opd-item">Rumah Sakit Umum Daerah Anuntaloko</li>
+				<li class="opd-item">Rumah Sakit Umum Daerah Raja Tombolotutu</li>
+				<li class="opd-item">Rumah Sakit Pratama Moutong</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow"></div>
+
+            <!-- Step 10: Paraf Sekda -->
+            <div class="step">
+                <span class="step-number">10</span>
+                Paraf Sekda
+            </div>
+            <div class="arrow"></div>
+
+            <!-- Step 11: Tanda Tangan Bupati -->
+            <div class="step">
+                <span class="step-number">11</span>
+                Tanda Tangan Bupati
+            </div>
+            <div class="arrow"></div>
+
+            <!-- Step 12: Penomoran & Registrasi -->
+            <div class="step">
+                <span class="step-number">12</span>
+                Penomoran & Registrasi di Bagian Hukum
+            </div>
+            <div class="arrow"></div>
+
+            <!-- Step 13: Selesai -->
+            <div class="step step-estimation">
+                Estimasi Waktu Penyelesaian: 3-7 Hari Kerja<br>
+                <small>(Mulai dari Tahap Review Substantif)</small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleOPD() {
+            var dropdown = document.getElementById('opdDropdown');
+            if (dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            } else {
+                dropdown.classList.add('show');
+            }
+        }
+    </script>
+</body>
+</html>
