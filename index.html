@@ -548,5 +548,44 @@
             }
         }
     </script>
+	<!-- Tombol Download PDF -->
+<div style="text-align:center; margin-bottom:20px;">
+  <button id="downloadBtn"
+    style="background:#2980b9; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:600;">
+    📄 Download PDF
+  </button>
+</div>
+</body>
+	<!-- Library untuk ubah HTML jadi PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+  // Fungsi buka/tutup Paraf Asisten
+  function toggleOPD() {
+    var dropdown = document.getElementById('opdDropdown');
+    dropdown.classList.toggle('show');
+  }
+
+  // Jalankan setelah halaman selesai dimuat
+  document.addEventListener('DOMContentLoaded', function() {
+    const downloadBtn = document.getElementById('downloadBtn');
+    const container = document.querySelector('.container');
+
+    if (downloadBtn && container) {
+      downloadBtn.addEventListener('click', function() {
+        const opt = {
+          margin: 0.3,
+          filename: 'Mekanisme_Alur_Keputusan_Bupati.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(container).save();
+      });
+    }
+  });
+</script>
 </body>
 </html>
+</html>
+
