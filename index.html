@@ -546,33 +546,44 @@
     </div>
 
     <script>
+  // Fungsi untuk dropdown Paraf Asisten
   function toggleOPD() {
     var dropdown = document.getElementById('opdDropdown');
     if (dropdown) dropdown.classList.toggle('show');
   }
 
+  // Fungsi download HTML (versi stabil)
   document.addEventListener('DOMContentLoaded', function() {
     const btnHtml = document.getElementById('downloadHTML');
-    if (btnHtml) {
-      btnHtml.addEventListener('click', function() {
-        const doctype = new XMLSerializer().serializeToString(document.doctype);
-        const html = document.documentElement.outerHTML;
-        const fullHtml = doctype + '\n' + html;
+    if (!btnHtml) return;
+
+    btnHtml.addEventListener('click', function() {
+      try {
+        const doctype = '<!DOCTYPE html>\n';
+        const head = document.head.outerHTML;
+        const body = document.body.outerHTML;
+        const fullHtml = doctype + '<html lang="id">\n' + head + '\n' + body + '\n</html>';
 
         const blob = new Blob([fullHtml], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
+
         const a = document.createElement('a');
         a.href = url;
+        a.download = 'Mekanisme_Alur_Keputusan_Bupati.html';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-      });
-    }
+      } catch (err) {
+        console.error('Gagal membuat file HTML:', err);
+        alert('Terjadi kesalahan saat membuat file HTML untuk diunduh.');
+      }
+    });
   });
 </script>
 </body>
 </html>
+
 
 
 
